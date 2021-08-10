@@ -1,0 +1,16 @@
+<header>
+  <nav>
+    <div class="nav-wrapper">
+      <a href="{% url 'all_books' %}" class="brand-logo">
+          <i class="material-icons">book</i>
+      </a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+      {% if user.is_authenticated %}
+        <li>
+          <span class="nav-user-wrapper"><i class="tiny material-icons">fingerprint</i> Hi {{ user.first_name}}</span>
+        </li>
+      {% endif %}
+      </ul>
+    </div>
+  </nav>
+</header>

@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block title %} {{book.title}} {% endblock %}
+{% block content %}
+<div class="container-fluid book_detail_container">
+    <div class="row">
+        <div class="col s12 m4 l3">
+            <div class="book_cover_wrapper z-depth-2">
+                {% if book.volumeInfo.imageLinks.thumbnail %}
+                <img class="book_detail_cover" src="{{book.volumeInfo.imageLinks.thumbnail}}">
+                {% else %}
+                <img class="book_detail_cover" src="/media/bookcover.png">
+                {% endif %}
+            </div>
+        </div>
+        <div class="col s12 m4 l9">
+            <div class="input-field col s12">
+                <label for="book_title">Title</label><br />
+                <h5 id="book_title"><b>{{book.volumeInfo.title|safe}}</b></h5>
+            </div>
+            <div class="input-field col s12">
+                <label for="book_author">Author</label><br />
+                <p id="book_author">
+                    {% for author in book.volumeInfo.authors %}
+                        {% if forloop.last %}
+                            {{ author|safe }}
+                        {% else %}
+                            {{ author|safe }}<span>, </span>
+                        {% endif %}
+                    {% endfor %}
+                </p>
+            </div>
+               <div class="input-field col s12">
+                <label for="book_pub_date">Publish date</label><br />
+                <p id="book_pub_date">{{book.volumeInfo.publishedDate|safe }}</p>
+            </div>
+            <div class="input-field col s12">
+                <label for="book_description">Description</label><br />
+                <p id="book_description">{{ book.volumeInfo.description|safe }}</p>
+            </div>
+
+            <div class="input-field col s12">
+                <label style="display: block">See more:</label><br /><br />
+                <a href="{{book.volumeInfo.infoLink}}" target="_blank" class="btn waves-effect waves-light">read more
+                    <i class="material-icons right">send</i>
+                </a>
+                <button id="add_to_my_list" class="btn waves-effect waves-light red lighten-1" onclick="like_book()">add to my list
+                    <i class="material-icons right">favorite</i>
+                </button>
+                <a href="{% url 'all_books' %}" class="btn waves-effect waves-light orange lighten-1">back to list
+                    <i class="material-icons right">apps</i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{{ book.volumeInfo|json_script:"book" }}
+
+<script>
+<!-- ADD TO FAVORITE LIST-->
+    const add_to_favorite_btn = document.getElementById("add_to_my_list");
+    const book_reference = JSON.parse(document.getElementById('book').textContent)
+
+    console.log(JSON.stringify(book_reference))
+
+
+    const data_to_send = {
+        title: "{{ book.volumeInfo.title }}",
+        description: "{{ book.volumeInfo.description }}",
+        publish_date: "{{ book.volumeInfo.publishedDate }}",
+        rating: 1,
+        book_cover: "{{book.volumeInfo.imageLinks.thumbnail}}"
+    }
+
+    const like_book = () => {
+        $.ajax({
+            method: "POST",
+            url: "{% url 'add_to_favorite' %}",
+            dataType : 'json',
+            data: {
+                "csrfmiddlewaretoken": "{{ csrf_token }}",
+                "data": data_to_send
+            }
+        })
+<!--        return fetch({-->
+<!--            method: "POST",-->
+<!--            url: "{% url 'add_to_favorite' %}",-->
+<!--            headers: {-->
+<!--                "Content-Type": "application/json",-->
+<!--                "X-CSRFToken":"{{ csrf_token }}"-->
+<!--            },-->
+<!--            body: JSON.stringify(book_reference)-->
+<!--        })-->
+    }
+</script>
+{% endblock %}

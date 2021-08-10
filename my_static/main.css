@@ -1,0 +1,29 @@
+    body {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+        background: var(--dark-gray);
+    }
+
+    main{
+        flex: 1 0 auto;
+        padding-top: 2rem;
+    }
+
+    .delete_form_col {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .delete_form_buttons {
+        margin-top: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .delete_form_buttons .btn-small {
+        margin: 0 0.25rem;
+    }
+

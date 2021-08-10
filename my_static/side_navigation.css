@@ -1,0 +1,16 @@
+.side_navigation {
+    visibility: visible;
+    overflow: hidden;
+    height: auto;
+}
+
+.side_navigation.hidden {
+    visibility: hidden;
+    overflow: hidden;
+    height: 0;
+}
+
+.side_navigation_col {
+    padding: 0 !important;
+}
+

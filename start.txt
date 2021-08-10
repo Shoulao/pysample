@@ -1,0 +1,91 @@
+** HOW TO: **
+
+1. pip install django
+2. django-admin startproject [project name] .
+3. >>> python manage.py runserver [port]
+
+** DIR PROJEKTU **
+
+** DODAWANIE NOWEJ APLIKACJI DO INSTALLED_APPS **
+1. >>> django-admin startapp [app name]
+2. w settings, dodanie [app name] do listy installed_apps
+
+
+** MIGRACJE **
+1. list of positions that need to be added to the db schema
+2. >>> python manage.py makemigrations
+3. >>> python manage.py migrate
+
+** USER **
+1. python manage.py createsuperuser
+
+
+** REJESTRACJA MODELI PO MIGRACJACH **
+By widzieć modele w admin panel musimy zarejestrować modele w pliku admin.py
+
+> admin.site.register([Model])
+
+
+** TEMPLATES **
+1. app > settings > TEMPLATES
+
+    "DIRS": ["templates"]
+
+** PLIKI STATIC **
+1. CSS
+2. JS
+3. W app.settings dodajemy
+
+    STATICFILES_DIRS = ["my_static"]
+
+4. W templatce dodajemy na topie
+
+    {% load static %}
+
+   a w <head> <link rel="stylesheet" href="{% static 'main.css' %}">
+
+
+** PLIKI MEDIA **
+1. dodajemy w settings
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = "my_media"
+
+By móc otworzyć załadowany plik w panelu admina musimy w app.urls zaimportować dwie rzeczy
+i do urlpatterns dodać
+
+from django.conf import settings
+from django.conf.urls.static import static
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('books/', include('core.urls'))
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+  ----------------------------------------------------------------
+
+
+** DODAWANIE LOGOWANIA **
+Django ma wbudowane funkcje logowania i widoki:
+
+1. w app.settings
+
+    LOGIN_URL = "login"
+    LOGIN_REDIRECT_URL = "all_books" # gdzie ma przekierować
+
+2. w app.urls
+
+from django.contrib.auth import views as auth_views
+
+urlpatterns = [
+   ...
+    path('login/', auth_views.LoginView.as_view())
+]
+
+3. w templates/registration/login.html
+
+   <form method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">login</button>
+   </form>
+

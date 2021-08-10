@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %} Books {% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+    {% include 'side_navigation.html' %}
+        {% if books %}
+        <div class="col book_list s12 m10 l10">
+            <div class="row">
+            {% for book in books %}
+
+                <div class="col s12 m6 l3">
+                      <div class="card medium sticky-action single_book_card">
+                            <div class="card-image">
+                              {% if book.volumeInfo.imageLinks.thumbnail %}
+                              <img class="book-cover" src="{{book.volumeInfo.imageLinks.thumbnail}}">
+                              {% else %}
+                              <img class="book-cover" src="/media/bookcover.png">
+                              {% endif %}
+
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title activator grey-text text-darken-4"><i class="title">{{book.volumeInfo.title}}</i> <i class="material-icons right">more_vert</i></span>
+                            </div>
+                            <div class="card-reveal">
+                              <span class="card-title grey-text text-darken-4">{{book.volumeInfo.title}}<i class="material-icons right">close</i></span>
+                              <p>{{book.volumeInfo.description}}</p>
+                            </div>
+                            <div class="card-action">
+                                <a href="{% url 'book_fetch_detail' book.id %}">read more</a>
+                            </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+
+        {% else %}
+           <div class="no_records_info">
+                <i class="material-icons red-text">block</i>
+                <p class="no_data_text">There are no records</p>
+           </div>
+        {% endif %}
+   </div>
+</div>
+{% endblock %}

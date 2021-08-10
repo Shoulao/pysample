@@ -1,0 +1,60 @@
+<div class="fixed-action-btn">
+  <a class="btn-floating btn-large yellow darken-1">
+    <i class="large material-icons">menu</i>
+  </a>
+  <ul>
+    <li>
+        <a href="{% url 'all_books' %}" class="btn-floating tooltipped" data-position="left" data-tooltip="Main screen">
+            <i class="material-icons blue">home</i>
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'my_custom_list' %}" class="btn-floating tooltipped" data-position="left" data-tooltip="My list">
+            <i class="material-icons red">favorite</i>
+        </a>
+    </li>
+    <li>
+        <span id="side_menu_toggle" class="btn-floating tooltipped" data-position="left" data-tooltip="This option is available on main screen">
+            <i class="material-icons left">filter_list</i>
+        </span>
+    </li>
+    {% if user.is_authenticated %}
+    <li>
+        <a href="{% url 'new_book' %}" class="btn-floating blue tooltipped" data-position="left" data-tooltip="add new book">
+            <i class="material-icons left">add_box</i>
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'logout' %}" class="btn-floating red tooltipped" data-position="left" data-tooltip="logout">
+            <i class="material-icons left">directions_walk</i>
+        </a>
+    </li>
+    {% else %}
+    <li>
+      <a href="{% url 'login' %}" class="btn-floating green tooltipped" data-position="left" data-tooltip="login">
+        <i class="material-icons">fingerprint</i>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</div>
+
+<script>
+<!-- TOOLTIP INIT -->
+    document.addEventListener('DOMContentLoaded', function() {
+        const elems = document.querySelectorAll('.tooltipped');
+        const instances = M.Tooltip.init(elems, {});
+    });
+
+<!-- FLOATING BUTTON INIT -->
+    document.addEventListener('DOMContentLoaded', function() {
+        const elems = document.querySelectorAll('.fixed-action-btn');
+        const instances = M.FloatingActionButton.init(elems, {});
+    });
+
+    const side_menu_button = document.getElementById("side_menu_toggle");
+        side_menu_button.addEventListener("click", function() {
+        document.querySelector(".side_navigation").classList.toggle("scale-out")
+        document.querySelector(".side_navigation").classList.toggle("hidden")
+    })
+</script>

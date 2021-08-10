@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %} {{ page_title }} {% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col s12 m1 l3"></div>
+        <div class="col s12 m10 l6 delete_form_col">
+            <h5>Delete position - <b>{{ book.title }}</b>?</h5>
+            <form method="POST" class="delete_form">
+                {% csrf_token %}
+                <div class="delete_form_buttons">
+                    <button type="submit" class="waves-effect waves-teal btn-small">
+                        <i class="tiny material-icons left">done</i>{{ button_text }}
+                    </button>
+                    <a href="{% url 'my_custom_list' %}" class="waves-effect waves-teal btn-small blue-grey lighten-3">
+                        <i class="tiny material-icons left">close</i>cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+        <div class="col s12 m1 l3"></div>
+    </div>
+</div>
+
+{% endblock %}

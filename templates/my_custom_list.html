@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %} {{ page_title }} {% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col s12 m12 l12">
+            {% for book in books %}
+
+            <div class="col s12 m6 l5 xl3">
+              <div class="card medium sticky-action">
+                <div class="card-image">
+                  {% if book.book_cover %}
+                  <img class="book-cover" src="{{book.book_cover.url}}">
+                  {% else %}
+                  <img class="book-cover" src="/media/bookcover.png">
+                  {% endif %}
+
+                </div>
+                <div class="card-content">
+                  <span class="card-title activator grey-text text-darken-4">{{ book.title }} <i class="material-icons right">more_vert</i></span>
+
+                </div>
+                <div class="card-reveal">
+                  <span class="card-title grey-text text-darken-4">{{ book.title }}<i class="material-icons right">close</i></span>
+                  <p>{{ book.description }}</p>
+                </div>
+                {% if user.is_authenticated %}
+                <div class="card-action">
+                  <a href="{% url 'edit_book' book.slug %}" class="blue-text">edit</a>
+                  <a href="{% url 'delete_book' book.slug %}" class="red-text">delete</a>
+                  <a href="{% url 'book_detail' book.slug %}">read more</a>
+                </div>
+                {% else %}
+                <div class="card-action">
+                  <a href="{% url 'book_detail' book.slug %}">more</a>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %} {{ page_title }} {% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col s12 m1 l3"></div>
+        <div class="col s12 m10 l6">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form }}
+                <div class="file-field input-field">
+                  <div class="btn">
+                    <span>File</span>
+                    <input type="file" class="book_cover_to_add" name="book_cover" accept="image/*">
+                  </div>
+                  <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text">
+                  </div>
+                </div>
+                <br />
+                <button type="submit" class="waves-effect waves-teal btn-small">
+                    <i class="tiny material-icons left">done</i>{{ button_text }}
+                </button>
+                <a href="{% url 'my_custom_list' %}" class="waves-effect waves-teal btn-small blue-grey lighten-3">
+                    <i class="tiny material-icons left">close</i>cancel
+                </a>
+            </form>
+        </div>
+        <div class="col s12 m1 l3"></div>
+    </div>
+</div>
+
+
+<script>
+<!-- ELEMENTS -->
+    const date_field = document.getElementById("id_publish_date");
+    const description_field = document.getElementById("id_description");
+    const description_label = document.querySelector("[for='id_description']")
+    const file_field = document.getElementById("id_book_cover");
+    const book_label_clear = document.querySelector("[for='book_cover-clear_id']")
+    const initial_book_file_input = document.getElementById("id_book_cover");
+
+<!-- FILE UPLOAD FIELD -->
+<!--    book_label.nextElementSibling.remove()-->
+    initial_book_file_input && initial_book_file_input.remove()
+    book_label_clear && book_label_clear.remove()
+    document.querySelector(".book_cover_to_add").id = "id_book_cover"
+
+<!-- TEXTAREA FIELD -->
+    description_field.classList.add("materialize-textarea")
+    description_field.setAttribute("data-length", 250)
+    description_label.innerText = `Description: ${description_field.value.length}/250`
+
+    description_field.addEventListener("input", function() {
+        description_label.innerText = `Description: ${description_field.value.length}/250`
+    })
+
+
+<!-- DATEPICKER FIELD -->
+    date_field.classList.add("datepicker")
+    document.addEventListener('DOMContentLoaded', function() {
+        const elems = document.querySelectorAll('.datepicker');
+        const instances = M.Datepicker.init(elems, {
+            format: 'yyyy-mm-dd',
+            showClearBtn: true
+        });
+    });
+</script>
+{% endblock %}
